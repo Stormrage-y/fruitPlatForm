@@ -34,9 +34,12 @@ router.post('/list', (req, res) => {
 
 // 删除
 router.get('/delete', (req, res) => {
-  let id = parseInt(req.query.id)
-  let sql = $sql.allFruit.delete
-  conn.query(sql, id, function (err, result) {
+  // var sql = $sql.allFruit.delete
+  const id = req.body.id
+  const sql = `delete from allFruit where id = '${id}`
+  console.log(sql)
+  console.log(id)
+  conn.query(sql, function (err, result) {
     if (err) {
       console.log(err)
     }
@@ -47,9 +50,11 @@ router.get('/delete', (req, res) => {
 })
 
 // 增加
-router.post('/addFruit',(req,res)=> {
-  var sql = $sql.allFruit.addFruit
+router.post('/addList',(req,res)=> {
+  var sql = $sql.allFruit.add
   var params = req.body
+  console.log('-----------我是params--------')
+  console.log(params)
   conn.query(sql,[params.pic,params.title,params.desc,params.tip,params.price,params.proDetailImg1,params.proSwipeImg1,params.proSwipeImg2,params.proSwipeImg3],function(err,result){
     if(err){
       console.log(err)
@@ -59,19 +64,5 @@ router.post('/addFruit',(req,res)=> {
     }
   })
 })
-//修改
-router.post('update',(req,res)=> {
-  let id = parseInt(req.query.id)
-  var sql = $sql.allFruit.update
-  var params = req.body
-  console.log(params)
-  conn.query(sql,id,[params.pic,params.title,params.desc,params.tip,params.price,params.proDetailImg1,params.proSwipeImg1,params.proSwipeImg2,params.proSwipeImg3],function(err,result){
-    if(err){
-      console.log(err)
-    }
-    if(result) {
-      jsonWrite(res,result)
-    }
-  })
-})
+
 module.exports = router
